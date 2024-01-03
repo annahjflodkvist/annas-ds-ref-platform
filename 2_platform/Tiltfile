@@ -1,0 +1,11 @@
+# extensions for tilt
+load('ext://secret', 'secret_yaml_tls')
+
+# deploy cert manager
+load('cert_manager_windows.tilt', 'deploy_cert_manager')
+deploy_cert_manager()
+
+# deploy cluster issuer
+k8s_yaml(secret_yaml_tls(name='root-ca', namespace='cert-manager', cert='../0_certs/root-ca/root-ca.pem', key='../0_certs/root-ca/root-ca-key.pem'))
+k8s_yaml('clusterissuer.yaml')
+
