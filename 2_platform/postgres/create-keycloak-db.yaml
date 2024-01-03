@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-keycloak-db
+  annotations: 
+    await: service
+spec:
+  template:
+    spec:
+      containers:
+      - name: psql
+        image: postgres:latest
+        command: ["sh", "-c"]
+        args: 
+          - >
+            psql -h postgres.platform -p 5432 -U myadmin -c "CREATE USER keycloak WITH PASSWORD '$KEYCLOAK_PASSWORD';" -c "CREATE DATABASE keycloak OWNER keycloak;"
+        env:
+        - name: PGPASSWORD
+          value: mypassword
+        - name: KEYCLOAK_PASSWORD
+          value: UsrmxwawnVTgEjRqm3H0
+      restartPolicy: Never
+  backoffLimit: 1

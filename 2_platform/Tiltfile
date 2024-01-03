@@ -18,3 +18,6 @@ k8s_yaml(local('kustomize build . --enable-helm'))
 # label resources and forward traffic to istio
 k8s_resource('istiod', labels="istio")
 k8s_resource('istio-gateway', port_forwards=['443:443', '80:80'], labels="istio")
+
+k8s_resource('pg', port_forwards=5432, labels="postgres")
+k8s_resource('create-keycloak-db', labels="postgres")

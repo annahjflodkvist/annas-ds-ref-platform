@@ -1,0 +1,55 @@
+# this is used as part of kustomize deployments into kubernetes
+# a file to merge configration into containers of deployments to add an init container that checks for a connection to a service before starting the main container
+# uses nc to check a hostname and port for an amount of seconds which must be passed as environment variables
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: __ignored__
+spec:
+  template:
+    spec:
+      initContainers:
+        - command:
+          - sh
+          - -c
+          - |
+            echo "Waiting for $SVC_HOST to become ready..."
+
+            until printf "." && nc -z -w 2 $(SVC_HOST) $(SVC_PORT); do
+                sleep $SVC_WAIT_INTERVAL;
+            done;
+
+            echo "$SVC_HOST:$SVC_PORT connection OK ✓"
+          image: docker.io/busybox:1.32
+          imagePullPolicy: IfNotPresent
+          name: svcchecker
+          env:
+            - name: SVC_HOST
+              valueFrom: 
+                configMapKeyRef:
+                  name: svcchecker
+                  key: SVC_HOST
+            - name: SVC_PORT
+              valueFrom: 
+                configMapKeyRef:
+                  name: svcchecker
+                  key: SVC_PORT
+            - name: SVC_WAIT_INTERVAL
+              valueFrom: 
+                configMapKeyRef:
+                  name: svcchecker
+                  key: SVC_WAIT_INTERVAL
+          resources:
+            limits:
+              cpu: 20m
+              memory: 32Mi
+            requests:
+              cpu: 20m
+              memory: 32Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File

@@ -2,6 +2,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - "./istio"
+  - "./postgres"
+patches:
+  - path: "connection-checker.yaml"
+    target:
+      kind: Job
+      annotationSelector: "await=service"
 helmCharts:   
 - name: base
   namespace: istio-system
