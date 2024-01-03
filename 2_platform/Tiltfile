@@ -9,3 +9,12 @@ deploy_cert_manager()
 k8s_yaml(secret_yaml_tls(name='root-ca', namespace='cert-manager', cert='../0_certs/root-ca/root-ca.pem', key='../0_certs/root-ca/root-ca-key.pem'))
 k8s_yaml('clusterissuer.yaml')
 
+# deploy namespaces
+k8s_yaml('namespaces.yaml')
+
+# deploy the platform
+k8s_yaml(local('kustomize build . --enable-helm'))
+
+# label resources and forward traffic to istio
+k8s_resource('istiod', labels="istio")
+k8s_resource('istio-gateway', port_forwards=['443:443', '80:80'], labels="istio")
