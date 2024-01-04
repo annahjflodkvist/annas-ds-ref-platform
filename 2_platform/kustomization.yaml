@@ -4,6 +4,7 @@ resources:
   - "./istio"
   - "./echo.yaml"
   - "./postgres"
+  - "./platform-gateway.yaml"
 patches:
   - path: "connection-checker.yaml"
     target:

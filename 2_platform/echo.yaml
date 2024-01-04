@@ -45,3 +45,26 @@ spec:
     targetPort: 80
   selector:
     app: echoserver
+---
+# virtual service
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: echo
+  namespace: platform
+spec:
+  hosts:
+  - echo.platform.local
+  gateways:
+  - platform-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: echo.platform.svc.cluster.local
+        port:
+          number: 80
+    rewrite:
+      authority: echo.platform.local
