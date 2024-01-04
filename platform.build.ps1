@@ -34,6 +34,18 @@ task platform_down {
     tilt down 
     pop-location
 }
+task backstage_up {
+    
+}
+task backstage_down {
+    
+}
+task apps_up {
+
+}
+task apps_down {
+
+}
 task local_dns {
     write-host "copy and paste into your host files (need to save as admin)"
 @"
@@ -48,3 +60,5 @@ task local_dns {
     code c:\windows\system32\drivers\etc\hosts
 }
 task init cert_up, local_dns
+task up cluster_up, platform_up, backstage_up, apps_up
+task down cluster_down
