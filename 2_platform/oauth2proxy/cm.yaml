@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oauth2-proxy-cm
+data:
+  oauth2_proxy.cfg: |
+    provider = "oidc"
+    oidc_issuer_url="http://keycloak.platform/realms/master"
+    insecure_oidc_skip_issuer_verification = true
+    upstreams = [ "static://200" ]
+    whitelist_domains = ["*.platform.local"]
+    email_domains = "*"
+    scope="openid email profile"
+    pass_host_header = true
+    reverse_proxy = true
+    auth_logging = true
+    pass_access_token = true
+    pass_authorization_header = true
+    request_logging = true
+    session_store_type = "redis"
+    set_authorization_header = true
+    set_xauthrequest = true
+    silence_ping_logging = true
+    skip_provider_button = true
+    skip_auth_strip_headers = false
+    skip_jwt_bearer_tokens = true
+    ssl_insecure_skip_verify = true
+    standard_logging = true
+    code_challenge_method = "S256"
+    extra_jwt_issuers = "https://portal.platform.local/api/auth=backstage"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: svcchecker
+  labels:
+    app: oauth2proxy
+data:
+  SVC_HOST: keycloak.platform
+  SVC_PORT: "80"
+  SVC_WAIT_INTERVAL: "20"

@@ -13,5 +13,4 @@ spec:
     - to:
         - operation:
             hosts: ["*.platform.local"]
-            notPaths: ["/oauth2/callback"]
-            notHosts: ["echo.platform.local", "kc.platform.local"]
+            notHosts: ["kc.platform.local"]
