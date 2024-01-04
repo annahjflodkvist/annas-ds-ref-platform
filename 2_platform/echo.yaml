@@ -1,0 +1,47 @@
+# A deployment of echo service for kubernetes in the platform namespace
+# this is a simple echo service that returns the request headers and body
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver
+  namespace: platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoserver
+  template:
+    metadata:
+      labels:
+        app: echoserver
+    spec:
+      containers:
+      - image: ealen/echo-server:latest
+        imagePullPolicy: IfNotPresent
+        name: echoserver
+        ports:
+        - containerPort: 80
+        env:
+        - name: PORT
+          value: "80"      
+        resources:
+          limits:
+            cpu: "0.2"
+            memory: "64Mi"
+          requests:
+            cpu: "0.1"
+            memory: "32Mi"
+---
+# service
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo
+  namespace: platform
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: echoserver
