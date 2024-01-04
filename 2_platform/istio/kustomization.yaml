@@ -3,3 +3,4 @@ kind: Kustomization
 namespace: istio-system
 resources:
   - "./mtls-strict.yaml"
+  - "./auth-policy.yaml"

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kc  # might need to be no more than 6 characters if using deployment ## https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#why-statefulset
+  labels:
+    app: keycloak
+  annotations:
+    await: service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+        app.kubernetes.io/name: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:23.0.1
+        ports:
+        - containerPort: 8080
+        envFrom: 
+        - configMapRef:
+            name: keycloak-cm
+        args: ["start-dev"]
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 250m
+            memory: 500Mi        

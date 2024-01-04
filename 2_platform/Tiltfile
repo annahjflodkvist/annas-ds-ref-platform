@@ -23,3 +23,5 @@ k8s_resource('pg', port_forwards=5432, labels="postgres")
 k8s_resource('create-keycloak-db', labels="postgres")
 
 k8s_resource('echoserver', port_forwards=['8800:80'], labels="echo")
+
+k8s_resource('kc', labels="keycloak")
