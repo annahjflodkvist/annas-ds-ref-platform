@@ -1,5 +1,5 @@
 param (
-
+    $dnsname = "platform.local"
 )
 
 task cert_up {
