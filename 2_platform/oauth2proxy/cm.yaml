@@ -5,8 +5,7 @@ metadata:
 data:
   oauth2_proxy.cfg: |
     provider = "oidc"
-    oidc_issuer_url="http://keycloak.platform/realms/master"
-    insecure_oidc_skip_issuer_verification = true
+    oidc_issuer_url="http://kc.platform.local/realms/master"
     upstreams = [ "static://200" ]
     whitelist_domains = ["*.platform.local"]
     email_domains = "*"

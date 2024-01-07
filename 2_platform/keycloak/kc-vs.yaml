@@ -7,6 +7,7 @@ spec:
     - kc.platform.local
   gateways:
     - platform-gateway
+    - mesh
   http:
     - match:
         - uri:
@@ -23,4 +24,3 @@ spec:
             host: keycloak.platform.svc.cluster.local
             port:
               number: 80
-

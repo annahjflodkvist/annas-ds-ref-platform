@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-client
+  name: create-client-oauth2proxy
 spec:
   backoffLimit: 1
   template:
