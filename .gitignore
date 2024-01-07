@@ -1,1 +1,2 @@
 0_certs/root-ca/
+3_gitops/argocd-git-configuration.yaml

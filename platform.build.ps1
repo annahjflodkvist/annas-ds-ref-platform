@@ -41,10 +41,14 @@ task backstage_down {
     
 }
 task apps_up {
-
+    push-location 3_gitops
+    tilt up 
+    pop-location
 }
 task apps_down {
-
+    push-location 3_gitops
+    tilt down 
+    pop-location
 }
 task local_dns {
     write-host "copy and paste into your host files (need to save as admin)"
@@ -61,5 +65,5 @@ task local_dns {
     code c:\windows\system32\drivers\etc\hosts
 }
 task init cert_up, local_dns
-task up cluster_up, platform_up, backstage_up, apps_up
+task up cluster_up, apps_up, backstage_up
 task down cluster_down
