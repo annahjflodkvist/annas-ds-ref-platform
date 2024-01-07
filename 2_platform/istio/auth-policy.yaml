@@ -13,4 +13,4 @@ spec:
     - to:
         - operation:
             hosts: ["*.platform.local"]
-            notHosts: ["kc.platform.local"]
+            notHosts: ["kc.platform.local", "argocd.platform.local"]

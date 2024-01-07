@@ -55,6 +55,7 @@ task local_dns {
 127.0.0.1 argocd.$dnsname
 127.0.0.1 pg.$dnsname
 127.0.0.1 echo.$dnsname
+127.0.0.1 argocd.$dnsname
 ############################################
 "@ | write-host
     code c:\windows\system32\drivers\etc\hosts

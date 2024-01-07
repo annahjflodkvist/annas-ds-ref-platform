@@ -7,6 +7,7 @@ resources:
   - "./echo.yaml"
   - "./postgres"
   - "./platform-gateway.yaml"
+  - "./argocd"
   - "./coredns-cm.yaml"
 patches:
   - path: "connection-checker.yaml"
@@ -64,3 +65,33 @@ helmCharts:
         enabled: true
         existingSecret: "oauth2-proxy-redis-secret"
         existingSecretPasswordKey: "redis-secret"
+- name: argo-cd
+  namespace: argocd
+  releaseName: argocd
+  repo: https://argoproj.github.io/argo-helm
+  version: 5.52.0
+  valuesInline:
+    configs:
+      cm:
+        url: https://argocd.platform.local
+        admin.enabled: "false"
+        oidc.config: |
+          name: keycloak
+          issuer: https://kc.platform.local/realms/master
+          clientID: argocd
+          clientSecret: $oidc.keycloak.clientSecret
+          requestedScopes: ["openid", "profile", "email", "groups"]
+        oidc.tls.insecure.skip.verify: "true"
+        kustomize.buildOptions: --enable-helm
+        application.resourceTrackingMethod: annotation
+      rbac:
+        policy.csv: |
+          g, argocd-admin, role:admin
+          g, argocd-viewer, role:readonly
+      params:
+        server.insecure: true
+      secret:
+        createSecret: false
+    dex:
+      enabled: false
+    
