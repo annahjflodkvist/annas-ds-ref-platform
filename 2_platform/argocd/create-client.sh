@@ -5,11 +5,10 @@ mastertoken=$(curl -k -g -d "client_id=admin-cli" -d "username=ds" -d "password=
 
 id="9d0a21a2-8a08-4202-b2cb-c590e23c90c2";
 url="http://keycloak.platform:80/admin/realms/master";
-clienturl="$url/clients/$id";
 
 # creates a new client scope named "groups" with a Token Mapper which will add the groups claim to the token when the client requests the groups scope.
 
-curl -X POST -k -g "http://keycloak.platform:80/admin/realms/master/client-scopes" \
+curl -X POST -k -g "$url/client-scopes" \
 -H "Authorization: Bearer $mastertoken" \
 -H "Content-Type: application/json" \
 --data-raw '
@@ -48,11 +47,9 @@ curl -X POST -k -g "http://keycloak.platform:80/admin/realms/master/client-scope
 '
 
 # creates a new client named "argocd"
-# using a clientreprentation according to the documetation: https://www.keycloak.org/docs-api/23.0.1/rest-api/#ClientRepresentation
-# curl -X DELETE -k -g  "$url/clients/$id" -H "Authorization: Bearer $mastertoken" 
+# using a clientreprentation according to the documentation: https://www.keycloak.org/docs-api/23.0.1/rest-api/#ClientRepresentation
 
-
-curl -X POST -k -g "http://keycloak.platform:80/admin/realms/master/clients" \
+curl -X POST -k -g "$url/clients" \
 -H "Authorization: Bearer $mastertoken" \
 -H "Content-Type: application/json" \
 --data-raw '
@@ -87,17 +84,19 @@ curl -X POST -k -g "http://keycloak.platform:80/admin/realms/master/clients" \
 }
 ';
 
-# creates a new group called argocd-admin and adds the user ds to it
+# creates a new group called argocd-admin and adds the user ds to it according to the documentation: https://www.keycloak.org/docs-api/23.0.1/rest-api/#GroupRepresentation
+daviduserid=$(curl -X GET -k -g "$url/users?userName=ds" -H "Authorization: Bearer $mastertoken" | jq -r '.[].id');
 
-# curl -X POST -k -g "http://keycloak.platform:80/admin/realms/master/groups" \
-# -H "Authorization: Bearer $mastertoken" \
-# -H "Content-Type: application/json" \
-# --data-raw '
-# {
-#     "name": "argocd-admin",
-#     "path": "/argocd-admin",
-#     "attributes": {},
-#     "realmRoles": [],
-#     "clientRoles": [],
-#     "subGroups": [],
-# }
+curl -X POST -k -g "$url/groups" \
+-H "Authorization: Bearer $mastertoken" \
+-H "Content-Type: application/json" \
+--data-raw '
+{
+    "name": "argocd-admin"
+}
+';
+
+groupid=$(curl -X GET -k -g "$url/groups" -H "Authorization: Bearer $mastertoken" | jq -r '.[] | select(.name == "argocd-admin") | .id');
+
+# adds the user ds to the group argocd-admin
+curl -X PUT -k -g "$url/users/$daviduserid/groups/$groupid" -H "Authorization: Bearer $mastertoken";
