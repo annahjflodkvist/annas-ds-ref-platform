@@ -4,7 +4,6 @@ resources:
   - "./oauth2proxy"
   - "./keycloak"
   - "./istio"
-  - "./echo.yaml"
   - "./postgres"
   - "./platform-gateway.yaml"
   - "./argocd"

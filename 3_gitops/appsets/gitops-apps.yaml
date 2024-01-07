@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-apps
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: ssh://ds@nas/volume1/homes/ds/git/ds-ref-platform.git
+        revision: HEAD
+        directories:
+          - path: 3_gitops/apps/*
+  template:
+    metadata:
+      name: "{{path.basename}}"
+      labels:
+        app.kubernetes.io/name: "{{path.basename}}"
+        app.kubernetes.io/part-of: gitops-apps
+    spec:
+      project: default
+      source:
+        repoURL: ssh://ds@nas/volume1/homes/ds/git/ds-ref-platform.git
+        targetRevision: HEAD
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'development'
+      syncPolicy:
+        automated:
+          selfHeal: false
