@@ -13,3 +13,32 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     note: kustomize-generated
+helmCharts:
+- name: argo-cd
+  releaseName: argocd
+  repo: https://argoproj.github.io/argo-helm
+  version: 5.52.0
+  valuesInline:
+    configs:
+      cm:
+        url: https://argocd.platform.local
+        admin.enabled: "false"
+        oidc.config: |
+          name: keycloak
+          issuer: https://kc.platform.local/realms/master
+          clientID: argocd
+          clientSecret: $oidc.keycloak.clientSecret
+          requestedScopes: ["openid", "profile", "email", "groups"]
+        kustomize.buildOptions: --enable-helm
+        application.resourceTrackingMethod: annotation
+      rbac:
+        policy.csv: |
+          g, argocd-admin, role:admin
+          g, argocd-viewer, role:readonly
+      params:
+        server.insecure: true
+      secret:
+        createSecret: false
+    dex:
+      enabled: false
+    
