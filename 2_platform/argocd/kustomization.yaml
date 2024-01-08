@@ -3,12 +3,20 @@ kind: Kustomization
 namespace: argocd
 resources:
   - "./argocd-vs.yaml"
-  - "./argocd-secret.yaml"
   - "./create-client.yaml"
 configMapGenerator:
   - name: client-script
     files:
       - "./create-client.sh"
+
+secretGenerator:
+  - name: argocd-secret
+    type: Opaque
+    literals:
+      - admin.password=notused
+      - oidc.keycloak.clientSecret=hbeT0fKekzgT0fGPMYV6On9cRcSHiU8b
+    files:
+      - oidc.keycloak.rootCA=secrets/root-ca.pem
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
@@ -29,6 +37,7 @@ helmCharts:
           clientID: argocd
           clientSecret: $oidc.keycloak.clientSecret
           requestedScopes: ["openid", "profile", "email", "groups"]
+          rootCA: $oidc.keycloak.rootCA
         kustomize.buildOptions: --enable-helm
         application.resourceTrackingMethod: annotation
       rbac:

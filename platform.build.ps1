@@ -15,6 +15,8 @@ task cert_up {
         openssl req -x509 -new -nodes -key ./0_certs/root-ca/root-ca-key.pem -days 3650 -sha256 -out ./0_certs/root-ca/root-ca.pem -subj "/CN=kube-ca" | out-null
         # import the root CA certificate into the local machine's trusted root certificate store
         Import-Certificate -FilePath "./0_certs/root-ca/root-ca.pem" -CertStoreLocation cert:\CurrentUser\Root
+        # Copy the cert over to argocd app so that its kustomize can reference it for oidc
+        cp 0_certs/root-ca/root-ca.pem ./2_platform/argocd/secrets/root-ca.pem
     }
 }
 
