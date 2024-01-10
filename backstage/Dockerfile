@@ -11,4 +11,4 @@ COPY . .
 # RUN yarn tsc
 # RUN yarn --cwd packages/backend build
 
-ENTRYPOINT [ "nodemon", "--exec", "yarn dev" ]
+ENTRYPOINT [ "nodemon", "--exec", "yarn tilt" ]

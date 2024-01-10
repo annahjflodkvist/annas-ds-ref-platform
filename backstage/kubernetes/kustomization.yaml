@@ -18,8 +18,8 @@ secretGenerator:
   - name: backstage-secret
     type: Opaque
     literals:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=postgres.platform
+      - POSTGRES_PORT="5432"
       - POSTGRES_USER=myadmin
       - POSTGRES_PASSWORD=mypassword
       - REDIS_CONNECTION=redis://default:backstage@backstage-redis-headless:6379
@@ -27,7 +27,10 @@ secretGenerator:
       - KEYCLOAK_CLIENT_ID=backstage
       - KEYCLOAK_CLIENT_SECRET=oqoVVhGECYJRPkJ5OrixYJ3tki5nRg53
       - BACKEND_SECRET=notused
-      # - ARGOCD_AUTH_TOKEN=argocd.token=
+      - ARGOCD_AUTH_TOKEN=argocd.token=somevalue
+      # - CERTIFICATE=notused
+      # - CERTIFICATE_KEY=notused
+
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

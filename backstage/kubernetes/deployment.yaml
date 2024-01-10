@@ -37,6 +37,9 @@ spec:
             - name: backend
               containerPort: 7007
               protocol: TCP
+            - name: frontend
+              containerPort: 3000
+              protocol: TCP
           resources:
             limits:
               cpu: "2"
