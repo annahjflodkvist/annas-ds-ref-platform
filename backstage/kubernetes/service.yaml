@@ -9,5 +9,9 @@ spec:
       port: 7007
       targetPort: backend
       protocol: TCP
+    - name: http-frontend
+      port: 3000
+      targetPort: frontend
+      protocol: TCP
   selector:
     app: backstage

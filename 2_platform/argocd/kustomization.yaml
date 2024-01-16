@@ -48,6 +48,13 @@ helmCharts:
         server.insecure: true
       secret:
         createSecret: false
+      ssh:
+        extraHosts: | # todo, remove this override once we have this all up on github
+          nas ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPANqJRT0PLVvMtuJgHnQaZiPI1XCKtXs77JVMZg1FYH
+          nas ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDWQKhV9GBx2ntxlpWS//G15Zv/L8ms/4ZNaPjq5p+iX2Q06ffxKyBt40seEFkY9kC7WcjaEnfCvUwCDW+Avqga0/6S6/BV2pOuU2SrZIEYbDv6AoRCkwqs36yuAHe8vMYyDDqOIEHRriobLY6vQKMGQnidibDzYGfy8yCOJotnK8yndGEM5Fz6LkJMN2cXTm8BM30Y4U3ChyQO1hxftK9bf9Xy4EBjryVN9pT09fLc10UncSH9P//xJJRAhB+3Ki7eRPCHMLYOYuwdXQ82aewx/YZALXwx7j8hRF9jVaKMI4mUwbAMrw7BlOyrvGVLPjNnbJvq6NefSI2/Vz6/dIlvXW1fg8IZ/3v+NBY/m3dRZP0hqkTxYsIIJwn+vW++ajvI05q2R9lYsmky/qm1WvEev6s2TfNdHuZDZhgtQltrZch/9PTRvSKZVGRoyPql2sXx44VkaU5XQrTRSJ8Quyr9SadvG+cWk5CQijROaZXiLi+YOPABRxN+/UhQ+/ItRuc=
+          nas ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMhcsdQUKb/pHHs2v4Ea+ZE2O0r5x413ItZCXQDyAnkGjm0tguFsRcJmihb6BZKN816bbMMDADSH2oN8pEf2nUQ=
+          nas.local,192.168.0.139 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMhcsdQUKb/pHHs2v4Ea+ZE2O0r5x413ItZCXQDyAnkGjm0tguFsRcJmihb6BZKN816bbMMDADSH2oN8pEf2nUQ=
+
     dex:
       enabled: false
     

@@ -1,10 +1,12 @@
 app:
   title: backstage on tilt
-  baseUrl: http://127.0.0.1
+  baseUrl: http://backstage.backstage.svc.cluster.local
   output:
     publicPath: https://backstage.platform.local
-  listen: 
+  listen:
     port: 3000
+    
+
 
 organization:
   name: dsoderlund.consulting
